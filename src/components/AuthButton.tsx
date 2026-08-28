@@ -126,8 +126,7 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: 'center',
-    fontFamily: fonts.semibold,
+    fontFamily: fonts.bold,
     fontSize: authButton.labelSize,
-    letterSpacing: -0.1,
   },
 });

@@ -61,11 +61,12 @@ recovered from the file's public render and measured directly:
 
 ### Assumptions worth knowing
 
-- **Typeface**: Open Runde (SIL OFL 1.1), bundled in `assets/fonts/` and wired
-  up in `src/theme/fonts.ts`. At 30.5dp it reproduces the artboard closely — `M`
-  measures 23.00dp against the design's 23.19dp, cap height 22.33dp against
-  22.15dp, and the three headline lines land within 1.6% on width and 0.7dp on
-  baseline.
+- **Typeface**: Open Runde (SIL OFL 1.1), bundled in `assets/fonts/`. The
+  artboard is 565 units wide, so its type maps straight across via `unit()` in
+  `src/theme/tokens.ts`: the headline is Medium 48 / auto line height / -2%
+  tracking, the button labels are Bold 24. Open Runde's own line height
+  (1.2102em) at 48 units comes to 40.10dp, which is what the design render
+  measures to within 0.03dp; the three headline lines land within 1.1% on width.
 - **Bottom spacing**: the artboard puts the buttons 15dp from the frame's
   bottom edge, which is inside the home-indicator zone. The app anchors them to
   the safe-area inset instead, so they sit slightly higher on handsets that

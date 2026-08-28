@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.sky },
   headline: {
     color: colors.textOnSky,
-    fontFamily: fonts.semibold,
+    fontFamily: fonts.medium,
     textAlign: 'center',
-    letterSpacing: 0,
+    letterSpacing: headline.letterSpacing,
   },
 });
