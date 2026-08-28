@@ -81,11 +81,12 @@ src/theme/tokens.ts            every measurement taken from the artboard
 src/data/props.ts              the ten props: position, size, depth, motion
 src/screens/WelcomeScreen.tsx  composition
 src/components/
-  SkyBackdrop.tsx              flat sky, radial glow, drifting clouds
+  SkyBackdrop.tsx              flat sky, radial glow, drifting cloud sprites
   FloatingProp.tsx             one prop: entrance, float, sway, parallax
   BrandBadge.tsx               glass disc, halo, live ring
   AuthButton.tsx               the two auth pills
   icons/                       Google, Apple, and the Baller mark
+src/data/clouds.ts             where each cloud sprite sits, and how it drifts
 src/hooks/
   useMotion.ts                 seamless sine loops, reduce-motion
   useTiltParallax.ts           device-motion offset

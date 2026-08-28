@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, RadialGradient, Stop } from 'react-native-svg';
 import { badge } from '../theme/tokens';
-import { GoalBoltGlyph } from './icons/GoalBoltGlyph';
+import { BrandMark } from './icons/BrandMark';
 import { sine, sineAround, useLoop } from '../hooks/useMotion';
 
 type Props = { animate: boolean };
@@ -167,7 +167,7 @@ export function BrandBadge({ animate }: Props) {
       </View>
 
       <Animated.View style={{ transform: [{ scale: sineAround(breath, 1, 0.02, 0.25) }] }}>
-        <GoalBoltGlyph size={badge.glyphSize} />
+        <BrandMark size={badge.glyphSize} />
       </Animated.View>
     </Animated.View>
   );

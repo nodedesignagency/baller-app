@@ -60,8 +60,8 @@ export function FloatingProp({ spec, screenWidth, screenHeight, tilt, animate }:
       pointerEvents="none"
       style={{
         position: 'absolute',
-        left: screenWidth * spec.left + spec.bleed.x,
-        top: screenHeight * spec.top + spec.bleed.y,
+        left: screenWidth * spec.left,
+        top: screenHeight * spec.top,
         width,
         height,
         opacity: entrance.interpolate({

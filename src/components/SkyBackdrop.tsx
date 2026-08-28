@@ -2,6 +2,7 @@ import React from 'react';
 import { Animated, Image, StyleSheet, View } from 'react-native';
 import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { colors, glow } from '../theme/tokens';
+import { CLOUDS } from '../data/clouds';
 import { sine, useLoop } from '../hooks/useMotion';
 
 type Props = {
@@ -13,13 +14,10 @@ type Props = {
 
 /**
  * The sky: a flat blue field, the soft radial glow the artboard puts behind the
- * headline, the cloud bank lifted out of the design, and the haze along the
- * bottom edge. Only the clouds move, and only just.
+ * headline, and the cloud sprites. Each cloud drifts on its own clock, which is
+ * what keeps the sky from reading as a still image.
  */
 export function SkyBackdrop({ width, height, animate }: Props) {
-  const drift = useLoop(48000, animate);
-  const bob = useLoop(31000, animate);
-
   return (
     <View
       style={[StyleSheet.absoluteFill, { backgroundColor: colors.sky }]}
@@ -48,20 +46,54 @@ export function SkyBackdrop({ width, height, animate }: Props) {
         <Rect x={0} y={0} width={width} height={height} fill="url(#skyGlow)" />
       </Svg>
 
-      <Animated.View
-        style={[
-          StyleSheet.absoluteFill,
-          {
-            transform: [{ translateX: sine(drift, 9, 0) }, { translateY: sine(bob, 5, 0.25) }],
-          },
-        ]}
-      >
-        <Image
-          source={require('../../assets/props/clouds.png')}
-          style={{ width, height }}
-          resizeMode="stretch"
+      {CLOUDS.map((cloud) => (
+        <Cloud
+          key={cloud.key}
+          cloud={cloud}
+          screenWidth={width}
+          screenHeight={height}
+          animate={animate}
         />
-      </Animated.View>
+      ))}
     </View>
+  );
+}
+
+function Cloud({
+  cloud,
+  screenWidth,
+  screenHeight,
+  animate,
+}: {
+  cloud: (typeof CLOUDS)[number];
+  screenWidth: number;
+  screenHeight: number;
+  animate: boolean;
+}) {
+  const drift = useLoop(cloud.drift.duration, animate);
+  const cloudWidth = screenWidth * cloud.width;
+
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left: screenWidth * cloud.left,
+        top: screenHeight * cloud.top,
+        width: cloudWidth,
+        height: cloudWidth / cloud.aspect,
+        opacity: cloud.opacity,
+        transform: [
+          { translateX: sine(drift, cloud.drift.x, cloud.drift.phase) },
+          { translateY: sine(drift, cloud.drift.y, cloud.drift.phase + 0.25) },
+          ...(cloud.flip ? [{ scaleX: -1 }] : []),
+        ],
+      }}
+    >
+      <Image
+        source={cloud.source}
+        style={{ width: '100%', height: '100%' }}
+        resizeMode="stretch"
+      />
+    </Animated.View>
   );
 }
