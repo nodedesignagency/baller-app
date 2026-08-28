@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, Image } from "react-native";
-import type { PropSpec } from "../data/props";
-import { sine, sineDeg, useLoop } from "../hooks/useMotion";
+import React, { useEffect, useRef } from 'react';
+import { Animated, Image } from 'react-native';
+import type { PropSpec } from '../data/props';
+import { sine, sineDeg, useLoop } from '../hooks/useMotion';
 
 type Props = {
   spec: PropSpec;
@@ -21,13 +21,7 @@ const ENTRANCE_STAGGER = 65;
  * One 3D prop. It springs in from off-frame, then breathes on a slow sine of
  * its own and leans with the handset.
  */
-export function FloatingProp({
-  spec,
-  screenWidth,
-  screenHeight,
-  tilt,
-  animate,
-}: Props) {
+export function FloatingProp({ spec, screenWidth, screenHeight, tilt, animate }: Props) {
   const entrance = useRef(new Animated.Value(animate ? 0 : 1)).current;
   const float = useLoop(spec.float.duration, animate);
   const sway = useLoop(spec.sway.duration, animate);
@@ -55,10 +49,7 @@ export function FloatingProp({
   const enter = (to: number) =>
     entrance.interpolate({ inputRange: [0, 1], outputRange: [to, 0] });
 
-  const translateX = Animated.add(
-    enter(spec.entry.x),
-    Animated.multiply(tilt.x, spec.depth),
-  );
+  const translateX = Animated.add(enter(spec.entry.x), Animated.multiply(tilt.x, spec.depth));
   const translateY = Animated.add(
     Animated.add(enter(spec.entry.y), Animated.multiply(tilt.y, spec.depth)),
     sine(float, spec.float.amplitude, spec.float.phase),
@@ -68,7 +59,7 @@ export function FloatingProp({
     <Animated.View
       pointerEvents="none"
       style={{
-        position: "absolute",
+        position: 'absolute',
         left: screenWidth * spec.left + spec.bleed.x,
         top: screenHeight * spec.top + spec.bleed.y,
         width,
@@ -83,7 +74,7 @@ export function FloatingProp({
           {
             rotate: entrance.interpolate({
               inputRange: [0, 1],
-              outputRange: [`${spec.entry.rotate}deg`, "0deg"],
+              outputRange: [`${spec.entry.rotate}deg`, '0deg'],
             }),
           },
           { rotate: sineDeg(sway, spec.sway.degrees, spec.sway.phase) },
@@ -96,11 +87,7 @@ export function FloatingProp({
         ],
       }}
     >
-      <Image
-        source={spec.source}
-        style={{ width, height }}
-        resizeMode="contain"
-      />
+      <Image source={spec.source} style={{ width, height }} resizeMode="contain" />
     </Animated.View>
   );
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import Svg, { Path } from "react-native-svg";
+import React from 'react';
+import Svg, { Path } from 'react-native-svg';
 
 /** Google's four-colour "G", drawn from the official brand geometry. */
 export function GoogleGlyph({ size }: { size: number }) {

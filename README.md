@@ -51,14 +51,20 @@ recovered from the file's public render and measured directly:
 - **The badge mark** (goal + net + lightning bolt) is redrawn as vector art in
   `src/components/icons/GoalBoltGlyph.tsx` — the render was too small to matte
   cleanly, and it stays crisp this way.
+- **The badge's glass.** The artboard uses Figma's Glass material (refraction 80,
+  dispersion 50, frost 0, light 100°). React Native has no backdrop-refraction
+  primitive, but what sits behind the disc is a smooth sky gradient, so the
+  material is rebuilt from what refraction actually does to one: a lens
+  brightening through the middle, a rim that catches light twice across the
+  sphere, and a whisper of colour split along that rim.
 
 ### Assumptions worth knowing
 
-- **Typeface**: the artboard's font could not be read from a render. Inter
-  matches it closely — cap-height-to-`M`-width came out at 1.048 in the design
-  and 1.049 in Inter — and the headline is set at the size that reproduces the
-  measured line widths. If the design uses something else, change
-  `fontFamily` in `src/screens/WelcomeScreen.tsx` and `src/components/AuthButton.tsx`.
+- **Typeface**: Open Runde (SIL OFL 1.1), bundled in `assets/fonts/` and wired
+  up in `src/theme/fonts.ts`. At 30.5dp it reproduces the artboard closely — `M`
+  measures 23.00dp against the design's 23.19dp, cap height 22.33dp against
+  22.15dp, and the three headline lines land within 1.6% on width and 0.7dp on
+  baseline.
 - **Bottom spacing**: the artboard puts the buttons 15dp from the frame's
   bottom edge, which is inside the home-indicator zone. The app anchors them to
   the safe-area inset instead, so they sit slightly higher on handsets that

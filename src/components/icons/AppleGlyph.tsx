@@ -1,14 +1,8 @@
-import React from "react";
-import Svg, { Path } from "react-native-svg";
+import React from 'react';
+import Svg, { Path } from 'react-native-svg';
 
 /** The Apple mark, sized to sit optically level with the Google "G". */
-export function AppleGlyph({
-  size,
-  color = "#FFFFFF",
-}: {
-  size: number;
-  color?: string;
-}) {
+export function AppleGlyph({ size, color = '#FFFFFF' }: { size: number; color?: string }) {
   return (
     <Svg width={size * (384 / 512)} height={size} viewBox="0 0 384 512">
       <Path

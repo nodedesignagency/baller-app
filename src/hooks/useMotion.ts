@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { AccessibilityInfo, Animated, Easing } from "react-native";
+import { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, Animated, Easing } from 'react-native';
 
 /** Number of interpolation stops used to approximate a sine curve. */
 const SINE_STEPS = 24;
@@ -65,10 +65,7 @@ export function useReduceMotion() {
     AccessibilityInfo.isReduceMotionEnabled().then((value) => {
       if (active) setReduced(value);
     });
-    const sub = AccessibilityInfo.addEventListener(
-      "reduceMotionChanged",
-      setReduced,
-    );
+    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduced);
     return () => {
       active = false;
       sub.remove();

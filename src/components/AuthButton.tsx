@@ -1,20 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import {
-  Animated,
-  Easing,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import * as Haptics from "expo-haptics";
-import { authButton, colors } from "../theme/tokens";
-import { GoogleGlyph } from "./icons/GoogleGlyph";
-import { AppleGlyph } from "./icons/AppleGlyph";
+import React, { useEffect, useRef } from 'react';
+import { Animated, Easing, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import { authButton, colors } from '../theme/tokens';
+import { fonts } from '../theme/fonts';
+import { GoogleGlyph } from './icons/GoogleGlyph';
+import { AppleGlyph } from './icons/AppleGlyph';
 
 type Props = {
-  variant: "google" | "apple";
+  variant: 'google' | 'apple';
   label: string;
   onPress: () => void;
   delay: number;
@@ -54,7 +47,7 @@ export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
     }).start();
   };
 
-  const isGoogle = variant === "google";
+  const isGoogle = variant === 'google';
 
   return (
     <Animated.View
@@ -81,10 +74,8 @@ export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
         accessibilityLabel={label}
         onPressIn={() => {
           setPressed(true);
-          if (Platform.OS !== "web") {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(
-              () => {},
-            );
+          if (Platform.OS !== 'web') {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
           }
         }}
         onPressOut={() => setPressed(false)}
@@ -92,9 +83,7 @@ export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
         style={[
           styles.pill,
           {
-            backgroundColor: isGoogle
-              ? colors.googleSurface
-              : colors.appleSurface,
+            backgroundColor: isGoogle ? colors.googleSurface : colors.appleSurface,
           },
         ]}
       >
@@ -106,10 +95,7 @@ export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
           )}
         </View>
         <Text
-          style={[
-            styles.label,
-            { color: isGoogle ? colors.googleLabel : colors.appleLabel },
-          ]}
+          style={[styles.label, { color: isGoogle ? colors.googleLabel : colors.appleLabel }]}
           numberOfLines={1}
         >
           {label}
@@ -123,24 +109,24 @@ const styles = StyleSheet.create({
   pill: {
     height: authButton.height,
     borderRadius: authButton.radius,
-    justifyContent: "center",
-    shadowColor: "#00344F",
+    justifyContent: 'center',
+    shadowColor: '#00344F',
     shadowOpacity: 0.16,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
   },
   glyph: {
-    position: "absolute",
+    position: 'absolute',
     left: authButton.glyphInset,
     width: authButton.glyphSize,
     height: authButton.height,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
-    textAlign: "center",
-    fontFamily: "Inter_600SemiBold",
+    textAlign: 'center',
+    fontFamily: fonts.semibold,
     fontSize: authButton.labelSize,
     letterSpacing: -0.1,
   },

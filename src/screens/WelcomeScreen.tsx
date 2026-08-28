@@ -1,24 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import {
-  Animated,
-  Easing,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { PROPS } from "../data/props";
-import { authButton, badge, colors, DESIGN, headline } from "../theme/tokens";
-import { useReduceMotion } from "../hooks/useMotion";
-import { useTiltParallax } from "../hooks/useTiltParallax";
-import { SkyBackdrop } from "../components/SkyBackdrop";
-import { FloatingProp } from "../components/FloatingProp";
-import { BrandBadge } from "../components/BrandBadge";
-import { AuthButton } from "../components/AuthButton";
+import React, { useEffect, useRef } from 'react';
+import { Animated, Easing, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PROPS } from '../data/props';
+import { authButton, badge, colors, DESIGN, headline } from '../theme/tokens';
+import { fonts } from '../theme/fonts';
+import { useReduceMotion } from '../hooks/useMotion';
+import { useTiltParallax } from '../hooks/useTiltParallax';
+import { SkyBackdrop } from '../components/SkyBackdrop';
+import { FloatingProp } from '../components/FloatingProp';
+import { BrandBadge } from '../components/BrandBadge';
+import { AuthButton } from '../components/AuthButton';
 
-export type Provider = "google" | "apple";
+export type Provider = 'google' | 'apple';
 
 type Props = { onContinue?: (provider: Provider) => void };
 
@@ -28,8 +22,7 @@ const HEADLINE_STAGGER = 90;
 const BUTTON_DELAY = 820;
 
 /** Keeps type from getting silly on very small or very wide screens. */
-const clamp = (n: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, n));
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 export function WelcomeScreen({ onContinue }: Props) {
   const { width, height } = useWindowDimensions();
@@ -59,7 +52,7 @@ export function WelcomeScreen({ onContinue }: Props) {
 
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: width / 2 - (badge.size * scale) / 2,
           top: height * badge.cy - (badge.size * scale) / 2,
           transform: [{ scale }],
@@ -71,7 +64,7 @@ export function WelcomeScreen({ onContinue }: Props) {
       <View
         pointerEvents="none"
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: 0,
           right: 0,
           top: height * headline.top,
@@ -91,7 +84,7 @@ export function WelcomeScreen({ onContinue }: Props) {
 
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           left: authButton.sideMargin,
           right: authButton.sideMargin,
           bottom: Math.max(insets.bottom, authButton.bottomInset),
@@ -100,7 +93,7 @@ export function WelcomeScreen({ onContinue }: Props) {
         <AuthButton
           variant="google"
           label="Continue with Google"
-          onPress={() => onContinue?.("google")}
+          onPress={() => onContinue?.('google')}
           delay={BUTTON_DELAY}
           animate={animate}
         />
@@ -108,7 +101,7 @@ export function WelcomeScreen({ onContinue }: Props) {
         <AuthButton
           variant="apple"
           label="Continue with Apple"
-          onPress={() => onContinue?.("apple")}
+          onPress={() => onContinue?.('apple')}
           delay={BUTTON_DELAY + 90}
           animate={animate}
         />
@@ -176,8 +169,8 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.sky },
   headline: {
     color: colors.textOnSky,
-    fontFamily: "Inter_600SemiBold",
-    textAlign: "center",
+    fontFamily: fonts.semibold,
+    textAlign: 'center',
     letterSpacing: 0,
   },
 });

@@ -1,4 +1,4 @@
-import type { ImageSourcePropType } from "react-native";
+import type { ImageSourcePropType } from 'react-native';
 
 /**
  * The ten 3D props that ring the frame. Positions and sizes were measured off
@@ -30,8 +30,8 @@ export type PropSpec = {
 
 export const PROPS: PropSpec[] = [
   {
-    key: "burger",
-    source: require("../../assets/props/burger.png"),
+    key: 'burger',
+    source: require('../../assets/props/burger.png'),
     left: 0.0054,
     top: 0.0025,
     width: 0.1838,
@@ -44,8 +44,8 @@ export const PROPS: PropSpec[] = [
     order: 1,
   },
   {
-    key: "gloves",
-    source: require("../../assets/props/gloves.png"),
+    key: 'gloves',
+    source: require('../../assets/props/gloves.png'),
     left: 0.3324,
     top: 0.0025,
     width: 0.2946,
@@ -58,8 +58,8 @@ export const PROPS: PropSpec[] = [
     order: 0,
   },
   {
-    key: "plane",
-    source: require("../../assets/props/plane.png"),
+    key: 'plane',
+    source: require('../../assets/props/plane.png'),
     left: 0.7514,
     top: 0.0025,
     width: 0.2432,
@@ -72,8 +72,8 @@ export const PROPS: PropSpec[] = [
     order: 2,
   },
   {
-    key: "ramen",
-    source: require("../../assets/props/ramen.png"),
+    key: 'ramen',
+    source: require('../../assets/props/ramen.png'),
     left: 0.7892,
     top: 0.1388,
     width: 0.2054,
@@ -86,8 +86,8 @@ export const PROPS: PropSpec[] = [
     order: 4,
   },
   {
-    key: "ticket",
-    source: require("../../assets/props/ticket.png"),
+    key: 'ticket',
+    source: require('../../assets/props/ticket.png'),
     left: 0.0054,
     top: 0.2075,
     width: 0.2541,
@@ -100,8 +100,8 @@ export const PROPS: PropSpec[] = [
     order: 3,
   },
   {
-    key: "card",
-    source: require("../../assets/props/card.png"),
+    key: 'card',
+    source: require('../../assets/props/card.png'),
     left: 0.0054,
     top: 0.3663,
     width: 0.127,
@@ -114,8 +114,8 @@ export const PROPS: PropSpec[] = [
     order: 6,
   },
   {
-    key: "goal",
-    source: require("../../assets/props/goal.png"),
+    key: 'goal',
+    source: require('../../assets/props/goal.png'),
     left: 0.7595,
     top: 0.3275,
     width: 0.2351,
@@ -128,8 +128,8 @@ export const PROPS: PropSpec[] = [
     order: 5,
   },
   {
-    key: "ball",
-    source: require("../../assets/props/ball.png"),
+    key: 'ball',
+    source: require('../../assets/props/ball.png'),
     left: 0.4784,
     top: 0.7225,
     width: 0.1838,
@@ -142,8 +142,8 @@ export const PROPS: PropSpec[] = [
     order: 7,
   },
   {
-    key: "coffee",
-    source: require("../../assets/props/coffee.png"),
+    key: 'coffee',
+    source: require('../../assets/props/coffee.png'),
     left: 0.0054,
     top: 0.7588,
     width: 0.1784,
@@ -156,12 +156,12 @@ export const PROPS: PropSpec[] = [
     order: 8,
   },
   {
-    key: "boot",
-    source: require("../../assets/props/boot.png"),
+    key: 'boot',
+    source: require('../../assets/props/boot.png'),
     left: 0.6243,
     top: 0.7938,
     width: 0.3703,
-    aspect: 137 / 79,
+    aspect: 137 / 42,
     bleed: { x: 7, y: 0 },
     depth: 1.05,
     entry: { x: 110, y: 60, rotate: 12 },

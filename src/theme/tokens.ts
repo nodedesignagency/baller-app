@@ -6,16 +6,16 @@ export const DESIGN = { width: 390, height: 844 } as const;
 
 export const colors = {
   /** Flat sky behind everything — the artboard is a single blue at its edges. */
-  sky: "#01A3F1",
+  sky: '#01A3F1',
   /** Colour the sky reaches at the centre of the radial glow. */
-  skyGlow: "#58D0FE",
+  skyGlow: '#58D0FE',
 
-  textOnSky: "#FFFFFF",
+  textOnSky: '#FFFFFF',
 
-  googleSurface: "#FFFFFF",
-  googleLabel: "#1C1C1E",
-  appleSurface: "#29292B",
-  appleLabel: "#FFFFFF",
+  googleSurface: '#FFFFFF',
+  googleLabel: '#1C1C1E',
+  appleSurface: '#29292B',
+  appleLabel: '#FFFFFF',
 } as const;
 
 /** Radial glow ellipse, as fractions of the screen box. */
@@ -36,7 +36,7 @@ export const glow = {
 } as const;
 
 export const headline = {
-  lines: ["Meet Baller,", "where live prediction", "meets social layer."],
+  lines: ['Meet Baller,', 'where live prediction', 'meets social layer.'],
   fontSize: 30.5,
   lineHeight: 40,
   /** Top of the first line, as a fraction of screen height. */
@@ -47,8 +47,8 @@ export const badge = {
   /** Centre of the glass disc, as fractions of the screen box. */
   cx: 0.5,
   cy: 0.4222,
-  size: 72,
-  glyphSize: 43,
+  size: 74.5,
+  glyphSize: 51,
 } as const;
 
 export const authButton = {

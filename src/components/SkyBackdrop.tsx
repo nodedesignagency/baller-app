@@ -1,8 +1,8 @@
-import React from "react";
-import { Animated, Image, StyleSheet, View } from "react-native";
-import Svg, { Defs, RadialGradient, Rect, Stop } from "react-native-svg";
-import { colors, glow } from "../theme/tokens";
-import { sine, useLoop } from "../hooks/useMotion";
+import React from 'react';
+import { Animated, Image, StyleSheet, View } from 'react-native';
+import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
+import { colors, glow } from '../theme/tokens';
+import { sine, useLoop } from '../hooks/useMotion';
 
 type Props = {
   width: number;
@@ -52,15 +52,12 @@ export function SkyBackdrop({ width, height, animate }: Props) {
         style={[
           StyleSheet.absoluteFill,
           {
-            transform: [
-              { translateX: sine(drift, 9, 0) },
-              { translateY: sine(bob, 5, 0.25) },
-            ],
+            transform: [{ translateX: sine(drift, 9, 0) }, { translateY: sine(bob, 5, 0.25) }],
           },
         ]}
       >
         <Image
-          source={require("../../assets/props/clouds.png")}
+          source={require('../../assets/props/clouds.png')}
           style={{ width, height }}
           resizeMode="stretch"
         />

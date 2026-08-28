@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, Easing, StyleSheet, View } from "react-native";
-import Svg, { Circle, Defs, RadialGradient, Stop } from "react-native-svg";
-import { badge } from "../theme/tokens";
-import { GoalBoltGlyph } from "./icons/GoalBoltGlyph";
-import { sine, sineAround, useLoop } from "../hooks/useMotion";
+import React, { useEffect, useRef } from 'react';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
+import Svg, { Circle, Defs, LinearGradient, RadialGradient, Stop } from 'react-native-svg';
+import { badge } from '../theme/tokens';
+import { GoalBoltGlyph } from './icons/GoalBoltGlyph';
+import { sine, sineAround, useLoop } from '../hooks/useMotion';
 
 type Props = { animate: boolean };
 
@@ -12,9 +12,17 @@ const PING_SCALE = 1.85;
 const GLOW_SPREAD = 2.2;
 
 /**
- * The glass disc at the centre of the frame. It scales in with a little
- * overshoot, breathes, and pushes out a slow ring — the screen's one nod to
- * the product being live.
+ * The glass disc at the centre of the frame.
+ *
+ * The artboard uses Figma's Glass material (refraction 80, dispersion 50, frost
+ * 0, light 100°). There is no backdrop-refraction primitive in React Native, but
+ * what sits behind the disc is a smooth sky gradient, so the material is
+ * reproduced from what refraction actually does to one: a lens brightening
+ * through the middle, a rim that catches light twice across the sphere, and a
+ * whisper of colour split along that rim.
+ *
+ * It scales in with a little overshoot, breathes, and pushes out a slow ring —
+ * the screen's one nod to the product being live.
  */
 export function BrandBadge({ animate }: Props) {
   const entrance = useRef(new Animated.Value(animate ? 0 : 1)).current;
@@ -49,11 +57,7 @@ export function BrandBadge({ animate }: Props) {
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }),
-        Animated.timing(ping, {
-          toValue: 0,
-          duration: 0,
-          useNativeDriver: true,
-        }),
+        Animated.timing(ping, { toValue: 0, duration: 0, useNativeDriver: true }),
       ]),
     );
     loop.start();
@@ -68,19 +72,11 @@ export function BrandBadge({ animate }: Props) {
       style={{
         width: badge.size,
         height: badge.size,
-        alignItems: "center",
-        justifyContent: "center",
-        opacity: entrance.interpolate({
-          inputRange: [0, 0.5, 1],
-          outputRange: [0, 1, 1],
-        }),
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: entrance.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 1, 1] }),
         transform: [
-          {
-            scale: entrance.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0.4, 1],
-            }),
-          },
+          { scale: entrance.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) },
           { translateY: sine(breath, 2.5, 0) },
         ],
       }}
@@ -100,8 +96,8 @@ export function BrandBadge({ animate }: Props) {
         <Svg width={glowSize} height={glowSize} viewBox="0 0 100 100">
           <Defs>
             <RadialGradient id="badgeHalo" cx="50%" cy="50%" r="50%">
-              <Stop offset={0} stopColor="#FFFFFF" stopOpacity={0.28} />
-              <Stop offset={0.45} stopColor="#FFFFFF" stopOpacity={0.12} />
+              <Stop offset={0} stopColor="#FFFFFF" stopOpacity={0.3} />
+              <Stop offset={0.45} stopColor="#FFFFFF" stopOpacity={0.13} />
               <Stop offset={1} stopColor="#FFFFFF" stopOpacity={0} />
             </RadialGradient>
           </Defs>
@@ -116,28 +112,61 @@ export function BrandBadge({ animate }: Props) {
           {
             width: badge.size,
             height: badge.size,
-            opacity: ping.interpolate({
-              inputRange: [0, 0.15, 1],
-              outputRange: [0, 0.4, 0],
-            }),
+            opacity: ping.interpolate({ inputRange: [0, 0.15, 1], outputRange: [0, 0.26, 0] }),
             transform: [
-              {
-                scale: ping.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, PING_SCALE],
-                }),
-              },
+              { scale: ping.interpolate({ inputRange: [0, 1], outputRange: [1, PING_SCALE] }) },
             ],
           },
         ]}
       >
-        <View style={[styles.disc, styles.ring]} />
+        <View style={styles.ring} />
       </Animated.View>
 
-      <View style={[styles.disc, styles.glass]} />
-      <Animated.View
-        style={{ transform: [{ scale: sineAround(breath, 1, 0.02, 0.25) }] }}
-      >
+      {/* The glass itself. */}
+      <View style={styles.centred}>
+        <Svg width={badge.size} height={badge.size} viewBox="0 0 100 100">
+          <Defs>
+            {/* Lens: light gathers through the middle and falls off to the rim. */}
+            <RadialGradient id="glassBody" cx="40%" cy="32%" r="78%">
+              <Stop offset={0} stopColor="#FFFFFF" stopOpacity={0.3} />
+              <Stop offset={0.5} stopColor="#EAF9FF" stopOpacity={0.16} />
+              <Stop offset={1} stopColor="#BDEDFF" stopOpacity={0.07} />
+            </RadialGradient>
+            {/* Rim, lit from 100°: bright twice, once each side of the sphere. */}
+            <LinearGradient id="glassRim" x1="0.14" y1="0.02" x2="0.86" y2="0.98">
+              <Stop offset={0} stopColor="#FFFFFF" stopOpacity={0.52} />
+              <Stop offset={0.36} stopColor="#FFFFFF" stopOpacity={0.14} />
+              <Stop offset={0.6} stopColor="#FFFFFF" stopOpacity={0.18} />
+              <Stop offset={1} stopColor="#FFFFFF" stopOpacity={0.6} />
+            </LinearGradient>
+            {/* Dispersion: the rim splits the light a touch, cool one side, warm the other. */}
+            <LinearGradient id="glassSplit" x1="0.1" y1="0.1" x2="0.9" y2="0.9">
+              <Stop offset={0} stopColor="#8FE9FF" stopOpacity={0.32} />
+              <Stop offset={0.5} stopColor="#FFFFFF" stopOpacity={0} />
+              <Stop offset={1} stopColor="#FFD6F2" stopOpacity={0.26} />
+            </LinearGradient>
+          </Defs>
+          <Circle cx={50} cy={50} r={49} fill="url(#glassBody)" />
+          <Circle
+            cx={50}
+            cy={50}
+            r={48.1}
+            fill="none"
+            stroke="url(#glassSplit)"
+            strokeWidth={2.4}
+          />
+          <Circle
+            cx={50}
+            cy={50}
+            r={48.7}
+            fill="none"
+            stroke="url(#glassRim)"
+            strokeWidth={1.5}
+          />
+        </Svg>
+      </View>
+
+      <Animated.View style={{ transform: [{ scale: sineAround(breath, 1, 0.02, 0.25) }] }}>
         <GoalBoltGlyph size={badge.glyphSize} />
       </Animated.View>
     </Animated.View>
@@ -145,21 +174,12 @@ export function BrandBadge({ animate }: Props) {
 }
 
 const styles = StyleSheet.create({
-  centred: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  disc: {
-    position: "absolute",
+  centred: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
+  ring: {
     width: badge.size,
     height: badge.size,
     borderRadius: badge.size / 2,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.7)',
   },
-  glass: {
-    backgroundColor: "rgba(255,255,255,0.07)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.22)",
-  },
-  ring: { borderWidth: 1.5, borderColor: "rgba(255,255,255,0.7)" },
 });
