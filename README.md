@@ -64,7 +64,7 @@ recovered from the file's public render and measured directly:
 - **Typeface**: Open Runde (SIL OFL 1.1), bundled in `assets/fonts/`. The
   artboard is 565 units wide, so its type maps straight across via `unit()` in
   `src/theme/tokens.ts`: the headline is Medium 48 / auto line height / -2%
-  tracking, the button labels are Bold 24. Open Runde's own line height
+  tracking, the button labels are Semibold 24 / 135% / +1%. Open Runde's own line height
   (1.2102em) at 48 units comes to 40.10dp, which is what the design render
   measures to within 0.03dp; the three headline lines land within 1.1% on width.
 - **Bottom spacing**: the artboard puts the buttons 15dp from the frame's

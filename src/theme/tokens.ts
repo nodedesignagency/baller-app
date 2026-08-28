@@ -67,8 +67,10 @@ export const authButton = {
   sideMargin: 18,
   gap: 10,
   bottomInset: 16,
-  /** Open Runde Bold 24, per the artboard. */
+  /** Open Runde Semibold 24 / 135% / +1%, per the artboard. */
   labelSize: unit(24),
+  labelLineHeight: unit(24) * 1.35,
+  labelLetterSpacing: unit(24) * 0.01,
   glyphSize: 26,
   /** Distance from the pill's left edge to the left edge of the glyph. */
   glyphInset: 14,
