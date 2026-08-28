@@ -74,17 +74,3 @@ export function useReduceMotion() {
 
   return reduced;
 }
-
-/** A sine that oscillates around `center` rather than around zero. */
-export function sineAround(
-  value: Animated.Value,
-  center: number,
-  amplitude: number,
-  phase = 0,
-) {
-  const { inputRange, outputRange } = sineRanges(amplitude, phase);
-  return value.interpolate({
-    inputRange,
-    outputRange: outputRange.map((v) => center + v),
-  });
-}

@@ -49,9 +49,12 @@ recovered from the file's public render and measured directly:
   `assets/props/`, then run `node scripts/sync-prop-aspects.mjs` to pick up the
   new proportions. If a re-export is trimmed differently, its `left`/`top`/
   `width` in `src/data/props.ts` may also need a nudge.
-- **The badge mark** (goal + net + lightning bolt) is redrawn as vector art in
-  `src/components/icons/GoalBoltGlyph.tsx` — the render was too small to matte
-  cleanly, and it stays crisp this way.
+- **The badge mark** is vector traced from the supplied logo export into
+  `src/components/icons/BrandMark.tsx`, so it is drawn rather than sampled. As a
+  raster it looked soft on device: the mark is ~150 device pixels wide, so the
+  compositor was bilinear-filtering a 304px image down by half, which is the
+  case thin white strokes survive worst. The trace matches the export's ink to
+  within antialiasing.
 - **The badge's glass.** The artboard uses Figma's Glass material (refraction 80,
   dispersion 50, frost 0, light 100°). React Native has no backdrop-refraction
   primitive, but what sits behind the disc is a smooth sky gradient, so the

@@ -3,7 +3,7 @@ import { Animated, Easing, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, RadialGradient, Stop } from 'react-native-svg';
 import { badge } from '../theme/tokens';
 import { BrandMark } from './icons/BrandMark';
-import { sine, sineAround, useLoop } from '../hooks/useMotion';
+import { sine, useLoop } from '../hooks/useMotion';
 
 type Props = { animate: boolean };
 
@@ -166,9 +166,9 @@ export function BrandBadge({ animate }: Props) {
         </Svg>
       </View>
 
-      <Animated.View style={{ transform: [{ scale: sineAround(breath, 1, 0.02, 0.25) }] }}>
-        <BrandMark size={badge.glyphSize} />
-      </Animated.View>
+      {/* No scale pulse on the mark: the badge already floats, and a continuous
+          sub-percent scale only costs the thin strokes their crispness. */}
+      <BrandMark size={badge.glyphSize} />
     </Animated.View>
   );
 }
