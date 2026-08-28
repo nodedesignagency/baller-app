@@ -45,9 +45,10 @@ recovered from the file's public render and measured directly:
   time, de-fringed against the sky colour, then upscaled. They are faithful in
   shape, colour and placement, but they come from a 370 × 800 render, so they
   are softer than the originals. **Swapping in the real exports is a drop-in:**
-  export each prop from Figma as a transparent PNG at 3x, keep the file names
-  in `assets/props/`, and update the matching `aspect` in `src/data/props.ts`
-  if the trimmed proportions differ.
+  export each prop from Figma as a transparent PNG at 3x, keep the file names in
+  `assets/props/`, then run `node scripts/sync-prop-aspects.mjs` to pick up the
+  new proportions. If a re-export is trimmed differently, its `left`/`top`/
+  `width` in `src/data/props.ts` may also need a nudge.
 - **The badge mark** (goal + net + lightning bolt) is redrawn as vector art in
   `src/components/icons/GoalBoltGlyph.tsx` — the render was too small to matte
   cleanly, and it stays crisp this way.
