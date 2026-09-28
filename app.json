@@ -35,7 +35,12 @@
           "resizeMode": "contain"
         }
       ],
-      "expo-sensors"
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Baller uses device motion to give the welcome screen a sense of depth."
+        }
+      ]
     ],
     "scheme": "baller",
     "backgroundColor": "#01A3F1"
