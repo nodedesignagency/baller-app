@@ -40,7 +40,8 @@
         {
           "motionPermission": "Baller uses device motion to give the welcome screen a sense of depth."
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "scheme": "baller",
     "backgroundColor": "#01A3F1"

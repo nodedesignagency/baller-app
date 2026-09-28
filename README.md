@@ -77,6 +77,13 @@ recovered from the file's public render and measured directly:
 - **Auth is not wired up.** Both buttons call `onContinue` in `App.tsx`, which
   is where a real OAuth flow would start.
 
+## Loading
+
+The native splash is held until Open Runde *and* every image have been decoded,
+so the entrance animation always plays against a complete screen. Without it the
+props arrive one at a time — very visible in Expo Go, where images are fetched
+from the dev server over the network rather than read from the app bundle.
+
 ## Layout
 
 ```

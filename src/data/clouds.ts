@@ -1,4 +1,4 @@
-import type { ImageSourcePropType } from 'react-native';
+import type { ImageRequireSource } from 'react-native';
 
 const cloudA = require('../../assets/props/cloud-a.png');
 const cloudB = require('../../assets/props/cloud-b.png');
@@ -10,7 +10,7 @@ const cloudB = require('../../assets/props/cloud-b.png');
  */
 export type CloudSpec = {
   key: string;
-  source: ImageSourcePropType;
+  source: ImageRequireSource;
   left: number;
   top: number;
   width: number;

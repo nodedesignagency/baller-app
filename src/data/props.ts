@@ -1,4 +1,4 @@
-import type { ImageSourcePropType } from 'react-native';
+import type { ImageRequireSource } from 'react-native';
 
 /**
  * The ten 3D props that ring the frame.
@@ -10,7 +10,7 @@ import type { ImageSourcePropType } from 'react-native';
  */
 export type PropSpec = {
   key: string;
-  source: ImageSourcePropType;
+  source: ImageRequireSource;
   /** Fraction of screen width / height for the prop's top-left corner. */
   left: number;
   top: number;
