@@ -86,6 +86,11 @@ move. Without this the props trickle in one at a time, which is very visible in
 Expo Go, where images are fetched from the dev server over the network rather
 than read from the app bundle.
 
+The artwork is stored as 255-colour palette PNGs — 322KB for all sixteen images
+against 1.84MB as full-colour, with a mean difference of 2-4 levels out of 255
+at the size they are actually drawn. That is most of the wait on a real handset,
+where Expo Go pulls every image over Wi-Fi.
+
 A four-second timeout releases the gate regardless, so a slow or missing asset
 can never strand the screen, and a failed image counts as loaded for the same
 reason. The native splash still waits on the font, since text has no equivalent
