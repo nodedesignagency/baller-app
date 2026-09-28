@@ -3,9 +3,11 @@ import { Animated, Easing, StyleSheet, Text, useWindowDimensions, View } from 'r
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PROPS } from '../data/props';
+import { CLOUDS } from '../data/clouds';
 import { authButton, badge, colors, DESIGN, headline } from '../theme/tokens';
 import { fonts } from '../theme/fonts';
 import { useReduceMotion } from '../hooks/useMotion';
+import { useImagesReady } from '../hooks/useImagesReady';
 import { useTiltParallax } from '../hooks/useTiltParallax';
 import { SkyBackdrop } from '../components/SkyBackdrop';
 import { FloatingProp } from '../components/FloatingProp';
@@ -30,6 +32,9 @@ export function WelcomeScreen({ onContinue }: Props) {
   const reduceMotion = useReduceMotion();
   const animate = !reduceMotion;
   const tilt = useTiltParallax(animate);
+  // Nothing animates in until the artwork is actually on screen, so the
+  // entrance never plays against a half-loaded frame.
+  const { ready, markReady } = useImagesReady(PROPS.length + CLOUDS.length);
 
   const scale = clamp(width / DESIGN.width, 0.84, 1.18);
 
@@ -37,7 +42,13 @@ export function WelcomeScreen({ onContinue }: Props) {
     <View style={styles.root}>
       <StatusBar style="light" />
 
-      <SkyBackdrop width={width} height={height} animate={animate} />
+      <SkyBackdrop
+        width={width}
+        height={height}
+        animate={animate}
+        start={ready}
+        onReady={markReady}
+      />
 
       {PROPS.map((spec) => (
         <FloatingProp
@@ -47,6 +58,8 @@ export function WelcomeScreen({ onContinue }: Props) {
           screenHeight={height}
           tilt={tilt}
           animate={animate}
+          start={ready}
+          onReady={markReady}
         />
       ))}
 
@@ -58,7 +71,7 @@ export function WelcomeScreen({ onContinue }: Props) {
           transform: [{ scale }],
         }}
       >
-        <BrandBadge animate={animate} />
+        <BrandBadge animate={animate} start={ready} />
       </View>
 
       <View
@@ -76,6 +89,7 @@ export function WelcomeScreen({ onContinue }: Props) {
             text={line}
             delay={HEADLINE_DELAY + index * HEADLINE_STAGGER}
             animate={animate}
+            start={ready}
             fontSize={headline.fontSize * scale}
             lineHeight={headline.lineHeight * scale}
           />
@@ -96,6 +110,7 @@ export function WelcomeScreen({ onContinue }: Props) {
           onPress={() => onContinue?.('google')}
           delay={BUTTON_DELAY}
           animate={animate}
+          start={ready}
         />
         <View style={{ height: authButton.gap }} />
         <AuthButton
@@ -104,6 +119,7 @@ export function WelcomeScreen({ onContinue }: Props) {
           onPress={() => onContinue?.('apple')}
           delay={BUTTON_DELAY + 90}
           animate={animate}
+          start={ready}
         />
       </View>
     </View>
@@ -114,12 +130,14 @@ function HeadlineLine({
   text,
   delay,
   animate,
+  start,
   fontSize,
   lineHeight,
 }: {
   text: string;
   delay: number;
   animate: boolean;
+  start: boolean;
   fontSize: number;
   lineHeight: number;
 }) {
@@ -130,6 +148,7 @@ function HeadlineLine({
       progress.setValue(1);
       return;
     }
+    if (!start) return;
     const animation = Animated.timing(progress, {
       toValue: 1,
       delay,
@@ -139,7 +158,7 @@ function HeadlineLine({
     });
     animation.start();
     return () => animation.stop();
-  }, [progress, delay, animate]);
+  }, [progress, delay, animate, start]);
 
   return (
     <Animated.Text

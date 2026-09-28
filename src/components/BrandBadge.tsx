@@ -5,7 +5,7 @@ import { badge } from '../theme/tokens';
 import { BrandMark } from './icons/BrandMark';
 import { sine, useLoop } from '../hooks/useMotion';
 
-type Props = { animate: boolean };
+type Props = { animate: boolean; start: boolean };
 
 /** How far past the disc the "live" ring travels before it fades out. */
 const PING_SCALE = 1.85;
@@ -24,7 +24,7 @@ const GLOW_SPREAD = 2.2;
  * It scales in with a little overshoot, breathes, and pushes out a slow ring —
  * the screen's one nod to the product being live.
  */
-export function BrandBadge({ animate }: Props) {
+export function BrandBadge({ animate, start }: Props) {
   const entrance = useRef(new Animated.Value(animate ? 0 : 1)).current;
   const ping = useRef(new Animated.Value(0)).current;
   const breath = useLoop(4200, animate);
@@ -34,6 +34,7 @@ export function BrandBadge({ animate }: Props) {
       entrance.setValue(1);
       return;
     }
+    if (!start) return;
     const animation = Animated.spring(entrance, {
       toValue: 1,
       delay: 260,
@@ -44,10 +45,10 @@ export function BrandBadge({ animate }: Props) {
     });
     animation.start();
     return () => animation.stop();
-  }, [entrance, animate]);
+  }, [entrance, animate, start]);
 
   useEffect(() => {
-    if (!animate) return;
+    if (!animate || !start) return;
     const loop = Animated.loop(
       Animated.sequence([
         Animated.delay(900),
@@ -62,7 +63,7 @@ export function BrandBadge({ animate }: Props) {
     );
     loop.start();
     return () => loop.stop();
-  }, [ping, animate]);
+  }, [ping, animate, start]);
 
   const glowSize = badge.size * GLOW_SPREAD;
 

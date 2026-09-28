@@ -79,10 +79,17 @@ recovered from the file's public render and measured directly:
 
 ## Loading
 
-The native splash is held until Open Runde *and* every image have been decoded,
-so the entrance animation always plays against a complete screen. Without it the
-props arrive one at a time — very visible in Expo Go, where images are fetched
-from the dev server over the network rather than read from the app bundle.
+The entrance waits for the artwork. Every image reports itself through
+`useImagesReady`, and nothing animates in until all of them have loaded — so the
+sky sits on its own while they arrive, then the whole composition enters as one
+move. Without this the props trickle in one at a time, which is very visible in
+Expo Go, where images are fetched from the dev server over the network rather
+than read from the app bundle.
+
+A four-second timeout releases the gate regardless, so a slow or missing asset
+can never strand the screen, and a failed image counts as loaded for the same
+reason. The native splash still waits on the font, since text has no equivalent
+of a half-loaded state worth showing.
 
 ## Layout
 

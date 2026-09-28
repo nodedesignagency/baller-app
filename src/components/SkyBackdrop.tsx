@@ -1,5 +1,5 @@
-import React from 'react';
-import { Animated, Image, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Easing, Image, StyleSheet, View } from 'react-native';
 import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { colors, glow } from '../theme/tokens';
 import { CLOUDS } from '../data/clouds';
@@ -10,6 +10,9 @@ type Props = {
   height: number;
   /** Suppressed when the OS asks for reduced motion. */
   animate: boolean;
+  /** Held false until every image on the screen has loaded. */
+  start: boolean;
+  onReady: (key: string) => void;
 };
 
 /**
@@ -17,7 +20,7 @@ type Props = {
  * headline, and the cloud sprites. Each cloud drifts on its own clock, which is
  * what keeps the sky from reading as a still image.
  */
-export function SkyBackdrop({ width, height, animate }: Props) {
+export function SkyBackdrop({ width, height, animate, start, onReady }: Props) {
   return (
     <View
       style={[StyleSheet.absoluteFill, { backgroundColor: colors.sky }]}
@@ -53,6 +56,8 @@ export function SkyBackdrop({ width, height, animate }: Props) {
           screenWidth={width}
           screenHeight={height}
           animate={animate}
+          start={start}
+          onReady={onReady}
         />
       ))}
     </View>
@@ -64,14 +69,37 @@ function Cloud({
   screenWidth,
   screenHeight,
   animate,
+  start,
+  onReady,
 }: {
   cloud: (typeof CLOUDS)[number];
   screenWidth: number;
   screenHeight: number;
   animate: boolean;
+  start: boolean;
+  onReady: (key: string) => void;
 }) {
   const drift = useLoop(cloud.drift.duration, animate);
   const cloudWidth = screenWidth * cloud.width;
+  // Fade in with everything else, rather than appearing the moment this one
+  // file happens to arrive.
+  const fade = useRef(new Animated.Value(animate ? 0 : 1)).current;
+
+  useEffect(() => {
+    if (!animate) {
+      fade.setValue(1);
+      return;
+    }
+    if (!start) return;
+    const animation = Animated.timing(fade, {
+      toValue: 1,
+      duration: 900,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: true,
+    });
+    animation.start();
+    return () => animation.stop();
+  }, [fade, animate, start]);
 
   return (
     <Animated.View
@@ -81,7 +109,7 @@ function Cloud({
         top: screenHeight * cloud.top,
         width: cloudWidth,
         height: cloudWidth / cloud.aspect,
-        opacity: cloud.opacity,
+        opacity: Animated.multiply(fade, cloud.opacity),
         transform: [
           { translateX: sine(drift, cloud.drift.x, cloud.drift.phase) },
           { translateY: sine(drift, cloud.drift.y, cloud.drift.phase + 0.25) },
@@ -93,6 +121,8 @@ function Cloud({
         source={cloud.source}
         style={{ width: '100%', height: '100%' }}
         resizeMode="stretch"
+        onLoad={() => onReady(cloud.key)}
+        onError={() => onReady(cloud.key)}
       />
     </Animated.View>
   );

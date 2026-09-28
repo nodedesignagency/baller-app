@@ -12,13 +12,14 @@ type Props = {
   onPress: () => void;
   delay: number;
   animate: boolean;
+  start: boolean;
 };
 
 /**
  * A full-width auth pill. The glyph is pinned to the left edge and the label is
  * centred across the whole pill, matching the artboard.
  */
-export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
+export function AuthButton({ variant, label, onPress, delay, animate, start }: Props) {
   const entrance = useRef(new Animated.Value(animate ? 0 : 1)).current;
   const press = useRef(new Animated.Value(0)).current;
 
@@ -27,6 +28,7 @@ export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
       entrance.setValue(1);
       return;
     }
+    if (!start) return;
     const animation = Animated.timing(entrance, {
       toValue: 1,
       delay,
@@ -36,7 +38,7 @@ export function AuthButton({ variant, label, onPress, delay, animate }: Props) {
     });
     animation.start();
     return () => animation.stop();
-  }, [entrance, delay, animate]);
+  }, [entrance, delay, animate, start]);
 
   const setPressed = (pressed: boolean) => {
     Animated.spring(press, {

@@ -10,6 +10,9 @@ type Props = {
   /** Shared tilt offset; each prop takes a share of it based on its depth. */
   tilt: Animated.ValueXY;
   animate: boolean;
+  /** Held false until every image on the screen has loaded. */
+  start: boolean;
+  onReady: (key: string) => void;
 };
 
 /** Delay before the first prop flies in, in ms. */
@@ -21,7 +24,15 @@ const ENTRANCE_STAGGER = 65;
  * One 3D prop. It springs in from off-frame, then breathes on a slow sine of
  * its own and leans with the handset.
  */
-export function FloatingProp({ spec, screenWidth, screenHeight, tilt, animate }: Props) {
+export function FloatingProp({
+  spec,
+  screenWidth,
+  screenHeight,
+  tilt,
+  animate,
+  start,
+  onReady,
+}: Props) {
   const entrance = useRef(new Animated.Value(animate ? 0 : 1)).current;
   const float = useLoop(spec.float.duration, animate);
   const sway = useLoop(spec.sway.duration, animate);
@@ -31,6 +42,7 @@ export function FloatingProp({ spec, screenWidth, screenHeight, tilt, animate }:
       entrance.setValue(1);
       return;
     }
+    if (!start) return;
     const animation = Animated.spring(entrance, {
       toValue: 1,
       delay: ENTRANCE_DELAY + spec.order * ENTRANCE_STAGGER,
@@ -41,7 +53,7 @@ export function FloatingProp({ spec, screenWidth, screenHeight, tilt, animate }:
     });
     animation.start();
     return () => animation.stop();
-  }, [entrance, animate, spec.order]);
+  }, [entrance, animate, start, spec.order]);
 
   const width = screenWidth * spec.width;
   const height = width / spec.aspect;
@@ -87,7 +99,14 @@ export function FloatingProp({ spec, screenWidth, screenHeight, tilt, animate }:
         ],
       }}
     >
-      <Image source={spec.source} style={{ width, height }} resizeMode="contain" />
+      <Image
+        source={spec.source}
+        style={{ width, height }}
+        resizeMode="contain"
+        onLoad={() => onReady(spec.key)}
+        // A broken asset still counts, so it cannot stall the entrance.
+        onError={() => onReady(spec.key)}
+      />
     </Animated.View>
   );
 }
